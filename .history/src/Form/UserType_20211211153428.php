@@ -17,12 +17,13 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('username', TextType::class, [
-                'attr' => [
-                    'class' => 'form-control']
-            ])
+            ->add('username', TextType::class, [] 
+            'attr'=> [
+                'class' => 'form-control']
+                ])
             //TODO, Allow later
             // ->add('roles')
+
             ->add('password', RepeatedType::class, [
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
@@ -48,7 +49,8 @@ class UserType extends AbstractType
                         'class' => 'form-control'
                         ]
                     ],
-            ]);
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -38,16 +38,19 @@
         <!-- Page Content -->
         <div class="container">
             <div class="row">
+                {# TODO  #}
+                {# uncomment after activated all this #}
+                {# <a href="{{ path('user_create') }}" class="btn btn-primary">Créer un utilisateur</a> #}
+
                 {% if app.user %}
-                <a href="{{ path('user_new') }}" class="btn btn-primary">Créer un utilisateur</a>
                 <a href="{{ path('app_logout') }}" class="pull-right btn btn-danger">Se déconnecter</a>
                 {% endif %}
 
-                {% if not app.user and 'app_login' != app.request.attributes.get('_route') %}
+                {% if not app.user and 'login' != app.request.attributes.get('_route') %}
                 <a href="{{ path('app_login') }}" class="btn btn-success">Se connecter</a>
                 {% endif %}
             </div>
-            <br>
+
             <div class="row">
                 <div class="col-md-12">
                     {% for flash_message in app.session.flashBag.get('success') %}
