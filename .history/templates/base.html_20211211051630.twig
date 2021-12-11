@@ -38,9 +38,7 @@
         <!-- Page Content -->
         <div class="container">
             <div class="row">
-                {# TODO  #}
-                {# uncomment after activated all this #}
-                {# <a href="{{ path('user_create') }}" class="btn btn-primary">Créer un utilisateur</a>
+                <a href="{{ path('user_create') }}" class="btn btn-primary">Créer un utilisateur</a>
 
                 {% if app.user %}
                 <a href="{{ path('logout') }}" class="pull-right btn btn-danger">Se déconnecter</a>
@@ -48,7 +46,7 @@
 
                 {% if not app.user and 'login' != app.request.attributes.get('_route') %}
                 <a href="{{ path('login') }}" class="btn btn-success">Se connecter</a>
-                {% endif %} #}
+                {% endif %}
             </div>
 
             <div class="row">
@@ -92,6 +90,8 @@
             </footer>
 
         </div>
+
+        <script src="{{ asset('js/jquery.js') }}"></script>
         <script src="{{ asset('js/bootstrap.min.js') }}"></script>
     </body>
 </html>
