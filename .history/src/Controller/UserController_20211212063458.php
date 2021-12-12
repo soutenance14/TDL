@@ -40,14 +40,12 @@ class UserController extends AbstractController
             $user->setPassword(
                 $passwordEncoder->encodePassword(
                     $user,
-                    $form->get('password')->getData()
+                    $form->get('plainPassword')->getData()
                 )
             );
             $entityManager->persist($user);
             $entityManager->flush();
-            
-            $this->addFlash('success', "L'utilisateur a bien été ajouté.");
-            
+
             return $this->redirectToRoute('user_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -76,15 +74,7 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user->setPassword(
-                $passwordEncoder->encodePassword(
-                    $user,
-                    $form->get('password')->getData()
-                )
-            );
             $entityManager->flush();
-
-            $this->addFlash('success', "L'utilisateur a bien été modifié");
 
             return $this->redirectToRoute('user_index', [], Response::HTTP_SEE_OTHER);
         }
