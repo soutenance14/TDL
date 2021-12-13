@@ -4,16 +4,14 @@ namespace App\Tests;
 
 use App\Entity\User;
 use App\Form\UserType;
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
-use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\Validator\Validation;
 
 class UserTypeTest extends TypeTestCase
 {
-    private $objectManager;
-
+    //this tests are based on this tutorial
+    //https://symfony.com/doc/current/form/unit_testing.html
     protected function getExtensions()
     {
         $validator = Validation::createValidator();
@@ -31,36 +29,40 @@ class UserTypeTest extends TypeTestCase
 
     public function testSubmitValidData()
     {
+        //FORM DATA
         $formData = array(
-            'username' => 'bob',
-            'password' => ['first' => 'root', 'second' => 'root'],
-            'email' => 'email@email.fr',
+            'username' => 'tony',
+            'password' => ['first' => 'password', 'second' => 'password'],
+            'email' => 'tony@gmail.com',
             // 'roles' => ['ROLE_USER']
         );
 
+        //INIT FORM
         $userForm = new User();
-        // Instead of creating a new instance, the one created in
-        // getExtensions() will be used.
         $form = $this->factory->create(UserType::class, $userForm);
         $form->submit($formData);
 
+        //CREATE USER EXPECTED FOR COMPARE
         $userExpected = new User();
-        $userExpected->setUsername('bob');
-        $userExpected->setPassword('root');
-        $userExpected->setEmail('email@email.fr');
+        $userExpected->setUsername('tony');
+        $userExpected->setPassword('password');
+        $userExpected->setEmail('tony@gmail.com');
 
-        print("Form user: " . $userForm->getPassword() ."\n");
-        print("\n");
-        print("expected user: " . $userExpected->getPassword() ."\n");
-
-
-        $this->assertTrue(true);
+        //ASSERT FORM
+        
+        $this->assertTrue($form->isValid());
+        $this->assertTrue($form->isSubmitted());
+        $this->assertTrue($form->isSynchronized());
         $this->assertEquals($userExpected, $userForm);
+
+        $view = $form->createView();
+        $children = $view->children;
+
+        //ASSERT VIEW
+        $this->assertArrayHasKey("username", $children);
+        $this->assertArrayHasKey("email", $children);
+        $this->assertArrayHasKey("password", $children);
+
     }
 
-
-    // public function testSomething(): void
-    // {
-    //     $this->assertTrue(true);
-    // }
 }
