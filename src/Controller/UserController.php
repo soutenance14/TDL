@@ -40,7 +40,7 @@ class UserController extends AbstractController
             $user->setPassword(
                 $passwordEncoder->encodePassword(
                     $user,
-                    $form->get('password')->getData()
+                    $user->getPassword()
                 )
             );
             $entityManager->persist($user);
