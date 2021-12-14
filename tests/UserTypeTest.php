@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Validation;
 
 class UserTypeTest extends TypeTestCase
 {
-    //this tests are based on this tutorial
+    //this tests are based on this documentation
     //https://symfony.com/doc/current/form/unit_testing.html
     protected function getExtensions()
     {
@@ -95,12 +95,12 @@ class UserTypeTest extends TypeTestCase
         $this->assertFalse($form->isValid());
     }
 
-    //TODO
-    // Delete this test or replace by a good one.
-    // The test bellow is not working
-    // If its because EmailType use JS for validate the good syntax for email,
-    // the test will never work and should be deleting
-
+    /***TODO
+    Delete this test or replace by a good one.
+    The test bellow is not working
+    If its because EmailType use JS for validate the good syntax for email,
+    the test will never work and should be deleting
+    ***/
     // public function testErrorSyntaxEmail()
     // {
     //     $email = "test";// no use @ for generate error
