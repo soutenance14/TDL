@@ -27,15 +27,11 @@ class UserTypeTest extends TypeTestCase
         ];
     }
 
-    public function testSubmitValidData()
+    // All success tests (assertTrue, assertEquals...)
+    public function testSuccessSubmitData()
     {
         //FORM DATA
-        $formData = array(
-            'username' => 'tony',
-            'password' => ['first' => 'password', 'second' => 'password'],
-            'email' => 'tony@gmail.com',
-            // 'roles' => ['ROLE_USER']
-        );
+        $formData = $this->getFormData();
 
         //INIT FORM
         $userForm = new User();
@@ -43,13 +39,9 @@ class UserTypeTest extends TypeTestCase
         $form->submit($formData);
 
         //CREATE USER EXPECTED FOR COMPARE
-        $userExpected = new User();
-        $userExpected->setUsername('tony');
-        $userExpected->setPassword('password');
-        $userExpected->setEmail('tony@gmail.com');
-
-        //ASSERT FORM
+        $userExpected = $this->getUser();
         
+        //ASSERT FORM
         $this->assertTrue($form->isValid());
         $this->assertTrue($form->isSubmitted());
         $this->assertTrue($form->isSynchronized());
@@ -59,10 +51,86 @@ class UserTypeTest extends TypeTestCase
         $children = $view->children;
 
         //ASSERT VIEW
+        // existing field
         $this->assertArrayHasKey("username", $children);
         $this->assertArrayHasKey("email", $children);
         $this->assertArrayHasKey("password", $children);
+    }
 
+    // All Error test (assertFalse, assertNotEquals...)
+    public function testErrorMinPasswordLength()
+    {
+        //password min length is 6
+        $password = "12345";
+        //FORM DATA
+        $userForm = new User();
+        $form = $this->factory->create(UserType::class, $userForm);
+        $formData = $this->getFormData();
+        $formData["password"] = ['first' => $password, 'second' => $password];
+        $form->submit($formData);
+        $this->assertFalse($form->isValid());
+    }
+    
+    public function testErrorPasswordRepeated()
+    {
+        //FORM DATA
+        $userForm = new User();
+        $form = $this->factory->create(UserType::class, $userForm);
+        $formData = $this->getFormData();
+        $formData["password"] = ['first' => "password", 'second' => "otherPassword"];
+        $form->submit($formData);
+        $this->assertFalse($form->isValid());
+    }
+    
+    public function testErrorMinUsernameLength()
+    {
+        //username min length is 3
+        $username = "12";
+        //FORM DATA
+        $userForm = new User();
+        $form = $this->factory->create(UserType::class, $userForm);
+        $formData = $this->getFormData();
+        $formData["username"] = $username;
+        $form->submit($formData);
+        $this->assertFalse($form->isValid());
+    }
+
+    //TODO
+    // Delete this test or replace by a good one.
+    // The test bellow is not working
+    // If its because EmailType use JS for validate the good syntax for email,
+    // the test will never work and should be deleting
+
+    // public function testErrorSyntaxEmail()
+    // {
+    //     $email = "test";// no use @ for generate error
+    //     //FORM DATA
+    //     $userForm = new User();
+    //     $form = $this->factory->create(UserType::class, $userForm);
+    //     $formData = $this->getFormData();
+    //     $formData["email"] = $email;
+    //     $form->submit($formData);
+    //     $this->assertFalse($form->isValid());
+    // }
+
+    //utils private function for getting var
+    private function getUser($username = "tony", $password = "password", $email = "tony@gmail.com") : User
+    {
+        $user = new User();
+        $user->setUsername($username);
+        $user->setPassword($password);
+        $user->setEmail($email);
+        return $user; 
+    }
+
+    private function getFormData(): array
+    {
+        $formData = array(
+            'username' => 'tony',
+            'password' => ['first' => 'password', 'second' => 'password'],
+            'email' => 'tony@gmail.com'
+        );
+        return $formData;
     }
 
 }

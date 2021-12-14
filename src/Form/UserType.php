@@ -20,7 +20,19 @@ class UserType extends AbstractType
         $builder
             ->add('username', TextType::class, [
                 'attr' => [
-                    'class' => 'form-control']
+                    'class' => 'form-control'],
+                'constraints' => 
+                [
+                    new NotBlank([
+                        'message' => 'Entrez un nom d\'utilisateur',
+                    ]),
+                    new Length([
+                        'min' => 3,
+                        'minMessage' => 'Le nom d\'utilisateur doit être supérieur ou égal à {{ limit }} caractères',
+                        // max length allowed by Symfony for security reasons
+                        'max' => 4096,
+                    ]),
+                ],
             ])
             ->add('email', EmailType::class, [
                 'attr' => [
@@ -33,7 +45,8 @@ class UserType extends AbstractType
                 // this is read and encoded in the controller
                 'type' => PasswordType::class,
                 'attr' => ['autocomplete' => 'new-password'],
-                'constraints' => [
+                'constraints' => 
+                [
                     new NotBlank([
                         'message' => 'Entrez un mot de passe',
                     ]),
