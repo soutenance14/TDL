@@ -25,7 +25,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $username;
 
     /**
-     * @ORM\Column(type="json")
+      * @ORM\Column(type="json", nullable=true)
      */
     private $roles = [];
 
