@@ -2,9 +2,7 @@
 
 namespace App\Tests;
 
-use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\HttpFoundation\Response;
 
 class UserNewTest extends WebTestCase
 {
@@ -34,8 +32,13 @@ class UserNewTest extends WebTestCase
             'password' => $password,
         ]);
 
-        //TODO Savoir pourquoi 302
-        $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
+        $this->assertTrue($this->redirectionOk($this->client->getResponse()->getStatusCode()));
+    }
+    
+    private function redirectionOk($statusCode): bool{
+        //TODO Savoir pourquoi 302 ou 303 parfois
+        //302 and 303 are status code for redirection
+        return in_array($statusCode, [302, 303]);
     }
     
     public function testSuccessNewUserRoute(): void
@@ -66,7 +69,7 @@ class UserNewTest extends WebTestCase
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
         
         $this->client->submit($form, [
-            'user[username]'    => "test240",
+            'user[username]'    => "test".uniqid(),
             'user[password]' => [
                 'first' => 'password',
                 'second' => 'password',
@@ -104,7 +107,7 @@ class UserNewTest extends WebTestCase
         ]);
 
         //redirecttion get
-        $this->assertNotEquals(303, $this->client->getResponse()->getStatusCode());
+        $this->assertFalse($this->redirectionOk($this->client->getResponse()->getStatusCode()));
         //Error server intern
         $this->assertEquals(500, $this->client->getResponse()->getStatusCode());
        
