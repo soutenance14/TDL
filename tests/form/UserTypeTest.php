@@ -95,7 +95,7 @@ class UserTypeTest extends TypeTestCase
         $this->assertFalse($form->isValid());
     }
 
-    /***TODO
+    /***TODO No error for Wrong Syntax Email
     Delete this test or replace by a good one.
     The test bellow is not working
     If its because EmailType use JS for validate the good syntax for email,
