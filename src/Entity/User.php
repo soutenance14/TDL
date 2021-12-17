@@ -20,12 +20,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true)
+     * @ORM\Column(type="string", length=180, unique=true, nullable=true)
      */
     private $username;
 
     /**
-      * @ORM\Column(type="json", nullable=true)
+      * @ORM\Column(type="json")
      */
     private $roles = [];
 
