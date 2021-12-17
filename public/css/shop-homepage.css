@@ -66,3 +66,7 @@ footer {
     font-style: italic;
     color:#d17581;
 }
+
+.clear {
+    clear: both;
+}
