@@ -34,10 +34,6 @@ class UserType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('email', EmailType::class, [
-                'attr' => [
-                    'class' => 'form-control']
-            ])
             //TODO, Allow later Adding Roles
             // ->add('roles')
             ->add('password', RepeatedType::class, [
@@ -65,6 +61,10 @@ class UserType extends AbstractType
                         'class' => 'form-control'
                         ]
                     ],
+            ])
+            ->add('email', EmailType::class, [
+                'attr' => [
+                    'class' => 'form-control margin-b-10']
             ]);
     }
 
