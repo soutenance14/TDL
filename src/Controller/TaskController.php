@@ -100,12 +100,21 @@ class TaskController extends AbstractController
      */
     public function delete(Request $request, Task $task, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$task->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($task);
-            $entityManager->flush();
-            $this->addFlash('success', 'La tâche a bien été supprimée.');
+        //twig not display button for no athorization but for more security
+        // controller make a additional verification 
+        if( null === $task->getUser() && in_array("ROLE_ADMIN", $this->getUser()->getRoles())
+            || null !== $task->getUser() && $this->getUser() === $task->getUser() )
+        {
+            if ($this->isCsrfTokenValid('delete'.$task->getId(), $request->request->get('_token'))) {
+                $entityManager->remove($task);
+                $entityManager->flush();
+                $this->addFlash('success', 'La tâche a bien été supprimée.');
+            }   
         }
-
+        else
+        {
+            $this->addFlash('success', 'Vous n\'avez pas les droits suffisants pour supprimer cette tâche.');
+        }
         return $this->redirectToRoute('task_index', [], Response::HTTP_SEE_OTHER);
     }
 }

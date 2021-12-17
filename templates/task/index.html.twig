@@ -7,7 +7,7 @@
     <div class="row">
         {% for task in tasks %}
         <div class="col-sm-4 col-lg-4 col-md-4">
-            <div class="thumbnail">
+            <div class="thumbnail" style="background:yellow">
                 <div class="caption">
                     <h4 class="pull-right">
                         {% if task.isDone %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}
@@ -21,12 +21,20 @@
                     {% endif %}
                 </div>
                 <div>
-                    <form action="{{ path('task_toggle', {'id' : task.id }) }}">
+                    <form method="post" action="{{ path('task_toggle', {'id' : task.id }) }}">
                         <button class="btn btn-success btn-sm pull-right">
                             {% if not task.isDone %}Marquer comme faite{% else %}Marquer non terminée{% endif %}
                         </button>
                     </form>
-                     {{ include('task/_delete_form.html.twig', {'button_label': 'Modifier'}) }}
+                    
+                    {% if (task.user and task.user == app.user) or (task.user == null and 'ROLE_ADMIN' in app.user.roles) %}
+                     {# {{ include('task/_delete_form.html.twig') }} #}
+                     <form method="post" action="{{ path('task_delete', {'id': task.id}) }}" onsubmit='return confirm("Etes vous certain de vouloir supprimer la tâche \" {{task.title}}\"  ?");'>
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ task.id) }}">
+                        <button class="btn btn-danger btn-sm">Supprimer</button>
+                    </form>
+                    {% endif %}
+                    <div class="clear"></div>
                 </div>
             </div>
         </div>
