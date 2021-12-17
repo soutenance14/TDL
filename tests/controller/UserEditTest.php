@@ -4,7 +4,7 @@ namespace App\Tests;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class UserNewTest extends WebTestCase
+class UserEdit extends WebTestCase
 {
     protected function setUp(): void
     {
@@ -43,20 +43,20 @@ class UserNewTest extends WebTestCase
     }
     
     // ALL TESTS SUCCESS
-    public function testSuccessNewUserRoute(): void
+    public function testSuccessEditUserRoute(): void
     {
         $this->login();// real user try to auth
-        $this->client->request('GET', '/user/new');
+        $this->client->request('GET', '/user/2/edit');
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
         // // $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', 'Créer un utilisateur');
+        $this->assertSelectorTextContains('h1', 'Modifier');
     }
 
-    public function testSuccessNewUser(): void
+    public function testSuccessEditUser(): void
     {
         $this->login();// real user try to auth
-        $crawler = $this->client->request('GET', '/user/new');
-        $buttonCrawlerNode = $crawler->selectButton('Créer');
+        $crawler = $this->client->request('GET', '/user/2/edit');
+        $buttonCrawlerNode = $crawler->selectButton('Modifier');
 
         // // retrieve the Form object for the form belonging to this button
         $form = $buttonCrawlerNode->form();
@@ -78,31 +78,31 @@ class UserNewTest extends WebTestCase
         $crawler = $this->client->followRedirect();
         
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
-        $this->assertSelectorTextContains('div.alert-success', 'L\'utilisateur a bien été ajouté.');
+        $this->assertSelectorTextContains('div.alert-success', 'L\'utilisateur a bien été modifié.');
     }
 
         //ALL TEST ERROR
-    public function testErrorNewUserRoute(): void
+    public function testErrorEditUserRoute(): void
     {
         $this->login('victor', 'password');// wrong user try to auth
-        $this->client->request('GET', '/user/new');
+        $this->client->request('GET', '/user/2/edit');
         $this->assertNotEquals(200, $this->client->getResponse()->getStatusCode());  
         $this->assertTrue($this->redirectionOk($this->client->getResponse()->getStatusCode()));          
     }
 
-    public function testErrorNewUserRouteNoAuth(): void
+    public function testErrorEditUserRouteNoAuth(): void
     {
         //Try to acces to user new witout access
-        $this->client->request('GET', '/user/new');
+        $this->client->request('GET', '/user/2/edit');
         $this->assertNotEquals(200, $this->client->getResponse()->getStatusCode());        
         $this->assertTrue($this->redirectionOk($this->client->getResponse()->getStatusCode()));    
     }
 
-    public function testErrorNewUser(): void
+    public function testErrorEditUser(): void
     {
         $this->login();// real user try to auth
-        $crawler = $this->client->request('GET', '/user/new');
-        $buttonCrawlerNode = $crawler->selectButton('Créer');
+        $crawler = $this->client->request('GET', '/user/2/edit');
+        $buttonCrawlerNode = $crawler->selectButton('Modifier');
 
         // // retrieve the Form object for the form belonging to this button
         $form = $buttonCrawlerNode->form();
@@ -110,9 +110,14 @@ class UserNewTest extends WebTestCase
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
         
         $this->client->submit($form, [
-           //submit wrong form (no fields, username, password, email) for generate error
+            //submit wrong form (no fields, username, password, email) for generate error
+            //info username and email is "autogetting" can not write here
+            //not password, this is necessaru ->
+            // 'user[password]' => [
+            //     'first' => 'password',
+            //     'second' => 'password',
+            // ],
         ]);
-
         //redirecttion get
         $this->assertFalse($this->redirectionOk($this->client->getResponse()->getStatusCode()));
         //Error server intern
