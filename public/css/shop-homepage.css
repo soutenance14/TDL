@@ -56,3 +56,13 @@ footer {
 .margin-b-10 {
     margin-bottom: 10px;
 }
+
+.owner {
+    font-style: italic;
+    color:#11719e;
+}
+
+.anonyme {
+    font-style: italic;
+    color:#d17581;
+}
