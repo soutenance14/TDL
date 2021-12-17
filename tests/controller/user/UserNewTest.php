@@ -2,53 +2,16 @@
 
 namespace App\Tests;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use App\Tests\Controller\LoginTest;
 
-class UserNewTest extends WebTestCase
+class UserNewTest extends LoginTest
 {
-    protected function setUp(): void
-    {
-        $this->client = self::createClient();
-    }
-
-    //UTILS
-    private function login($username = 'paul', $password = 'password'): void
-    {
-        $crawler = $this->client->request('GET', '/login');
-        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
-
-        // Test if login field exists
-        $this->assertSelectorExists('input[name="username"]');
-        $this->assertSelectorExists('input[name="password"]');
-        $this->assertSelectorTextContains('button', 'Se connecter');
-
-        // select the button
-        $buttonCrawlerNode = $crawler->selectButton('Se connecter');
-
-        // // retrieve the Form object for the form belonging to this button
-        $form = $buttonCrawlerNode->form();
-
-        $this->client->submit($form, [
-            'username'    => $username,
-            'password' => $password,
-        ]);
-
-        $this->assertTrue($this->redirectionOk($this->client->getResponse()->getStatusCode()));
-    }
-    
-    private function redirectionOk($statusCode): bool{
-        //TODO Savoir pourquoi 302 ou 303 parfois
-        //302 and 303 are status code for redirection
-        return in_array($statusCode, [302, 303]);
-    }
-    
     // ALL TESTS SUCCESS
     public function testSuccessNewUserRoute(): void
     {
         $this->login();// real user try to auth
         $this->client->request('GET', '/user/new');
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
-        // // $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('h1', 'Créer un utilisateur');
     }
 
@@ -60,7 +23,6 @@ class UserNewTest extends WebTestCase
 
         // // retrieve the Form object for the form belonging to this button
         $form = $buttonCrawlerNode->form();
-        // $form['user[username]'] = 'autre';
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
         
         $this->client->submit($form, [
@@ -73,7 +35,6 @@ class UserNewTest extends WebTestCase
         ]);
 
         //redirection get
-        //TODO Savoir pourquoi 303
         $this->assertEquals(303, $this->client->getResponse()->getStatusCode());
         $crawler = $this->client->followRedirect();
         
@@ -86,7 +47,7 @@ class UserNewTest extends WebTestCase
     {
         $this->login('victor', 'password');// wrong user try to auth
         $this->client->request('GET', '/user/new');
-        $this->assertNotEquals(200, $this->client->getResponse()->getStatusCode());  
+        $this->assertNotEquals(200, $this->client->getResponse()->getStatusCode()); 
         $this->assertTrue($this->redirectionOk($this->client->getResponse()->getStatusCode()));          
     }
 
