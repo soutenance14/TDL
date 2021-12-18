@@ -30,10 +30,10 @@ abstract class LoginTest extends WebTestCase
     }
     
     public function redirectionOk($statusCode): bool{
-        //TODO Why Sometimes is 302, sometimes is 303 redirection
-        // vaild form login-> 302
-        // Valid form TYpe Form (example UserType) -> 303
-        //302 and 303 are status code for redirection
-        return in_array($statusCode, [302, 303]);
+    // https://en.wikipedia.org/wiki/HTTP_302
+    // 302 redirection standard
+    // 303 redirection with type request change to "GET"
+    // 307 redirection with conservating type request is same
+        return in_array($statusCode, [302, 303, 307]);
     }
 }

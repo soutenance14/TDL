@@ -101,17 +101,17 @@ class UserTypeTest extends TypeTestCase
     If its because EmailType use JS for validate the good syntax for email,
     the test will never work and should be deleting
     ***/
-    // public function testErrorSyntaxEmail()
-    // {
-    //     $email = "test";// no use @ for generate error
-    //     //FORM DATA
-    //     $userForm = new User();
-    //     $form = $this->factory->create(UserType::class, $userForm);
-    //     $formData = $this->getFormData();
-    //     $formData["email"] = $email;
-    //     $form->submit($formData);
-    //     $this->assertFalse($form->isValid());
-    // }
+    public function testErrorSyntaxEmail()
+    {
+        $email = "test";// no use @ for generate error
+        //FORM DATA
+        $userForm = new User();
+        $form = $this->factory->create(UserType::class, $userForm);
+        $formData = $this->getFormData();
+        $formData["email"] = $email;
+        $form->submit($formData);
+        $this->assertFalse($form->isValid());
+    }
 
     //utils private function for getting var
     private function getUser($username = "tony", $password = "password", $email = "tony@gmail.com") : User
