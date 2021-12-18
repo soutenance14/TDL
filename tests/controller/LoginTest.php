@@ -12,7 +12,7 @@ abstract class LoginTest extends WebTestCase
     }
 
     //UTILS
-    public function login($username = 'paul', $password = 'password'): void
+    public function login($username = 'admin', $password = 'password'): void
     {
         $crawler = $this->client->request('GET', '/login');
 
