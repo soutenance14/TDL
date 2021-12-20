@@ -69,10 +69,8 @@ class TaskNewTest extends LoginTest
            //submit wrong form (no fields, title, content) for generate error
         ]);
 
-        //redirection get
-        $this->assertFalse($this->redirectionOk($this->client->getResponse()->getStatusCode()));
-        // No status ok
-        $this->assertNotEquals(200, $this->client->getResponse()->getStatusCode());
+        // Failed proceed Form: 422 Unprocessable Entity or 500 error intern server
+        $this->assertTrue($this->failedProceedForm( $this->client->getResponse()->getStatusCode()));
     }
 
 }
