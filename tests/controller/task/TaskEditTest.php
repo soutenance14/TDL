@@ -40,7 +40,7 @@ class TaskEdit extends LoginTest
     // ID = 4
 
 
-        // ALL TESTS ERROR
+    // TESTS ERROR
     public function testErrorEditTaskFromAnotherUserRoute(): void
     {
         $this->login(); // real user try to auth
@@ -65,7 +65,7 @@ class TaskEdit extends LoginTest
         $this->assertSelectorTextContains('div.alert-danger', 'Vous n\'avez pas les droits suffisants pour supprimer cette tâche.');
     }
 
-        // ALL TESTS SUCCESS
+    // TESTS SUCCESS
     public function testSuccessEditOneOfMyTask(): void
     {
         $this->login();// admin user try to auth
@@ -111,6 +111,5 @@ class TaskEdit extends LoginTest
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
         $this->assertSelectorTextContains('div.alert-success', 'La tâche a bien été modifiée.');
     }
-    
      
 }

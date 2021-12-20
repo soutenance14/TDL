@@ -58,6 +58,4 @@ class TaskListTest extends LoginTest
         $this->assertSelectorExists('h5.owner', 'Par user1');
         $this->assertSelectorExists('h5.owner', 'Par user2');
     }
-    
-
 }
