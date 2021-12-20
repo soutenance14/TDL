@@ -11,7 +11,23 @@ abstract class LoginTest extends WebTestCase
         $this->client = self::createClient();
     }
 
-    //UTILS
+    // UTILS ASSERT
+    public function assertSelectorsLoginFormExists(): void
+    {
+        // Test if login field exists
+        $this->assertSelectorExists('input[name="username"]');
+        $this->assertSelectorExists('input[name="password"]');
+        $this->assertSelectorTextContains('button', 'Se connecter');
+    }
+
+    public function assertRedirectToLogin(): void
+    {
+        $this->assertTrue($this->redirectionOk($this->client->getResponse()->getStatusCode())); 
+        $this->client->followRedirect();
+        $this->assertSelectorsLoginFormExists();
+    }
+
+    // UTILS
     public function login($username = 'admin', $password = 'password'): void
     {
         $crawler = $this->client->request('GET', '/login');
@@ -29,7 +45,6 @@ abstract class LoginTest extends WebTestCase
 
     }
     
-    //utils
     public function redirectionOk($statusCode): bool
     {
     // https://en.wikipedia.org/wiki/HTTP_302
@@ -45,19 +60,5 @@ abstract class LoginTest extends WebTestCase
         //500 Error Intern Serveur
         return in_array($statusCode, [422, 500]);
     }
-
-    public function assertSelectorsLoginFormExists(): void
-    {
-        // Test if login field exists
-        $this->assertSelectorExists('input[name="username"]');
-        $this->assertSelectorExists('input[name="password"]');
-        $this->assertSelectorTextContains('button', 'Se connecter');
-    }
-
-    public function assertRedirectToLogin(): void
-    {
-        $this->assertTrue($this->redirectionOk($this->client->getResponse()->getStatusCode())); 
-        $this->client->followRedirect();
-        $this->assertSelectorsLoginFormExists();
-    }
+   
 }

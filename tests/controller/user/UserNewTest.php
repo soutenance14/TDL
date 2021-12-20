@@ -7,8 +7,7 @@ use App\Tests\Controller\LoginTest;
 class UserNewTest extends LoginTest
 {
 
-    //ALL TEST ERROR
-
+    // TESTS ERROR
     public function testErrorNewUserNoAuth(): void
     {
         //Try to acces to user new witout access
@@ -34,7 +33,7 @@ class UserNewTest extends LoginTest
         $this->assertTrue($this->failedProceedForm( $this->client->getResponse()->getStatusCode()));
     }
 
-    // ALL TESTS SUCCESS
+    // TESTS SUCCESS
 
     public function testSuccessNewUser(): void
     {

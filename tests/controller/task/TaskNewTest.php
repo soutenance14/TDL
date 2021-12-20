@@ -6,7 +6,7 @@ use App\Tests\Controller\LoginTest;
 
 class TaskNewTest extends LoginTest
 {
-    // ALL TESTS SUCCESS
+    // TESTS SUCCESS
     public function testSuccessNewTaskRoute(): void
     {
         $this->login();// real user try to auth
@@ -38,7 +38,7 @@ class TaskNewTest extends LoginTest
         $this->assertSelectorTextContains('div.alert-success', 'La tâche a été bien été ajoutée.');
     }
 
-    //     //ALL TEST ERROR
+    // TESTS ERROR
     public function testErrorNewUserRoute(): void
     {
         $this->login('victor', 'password');// wrong user try to auth
