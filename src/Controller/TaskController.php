@@ -65,21 +65,27 @@ class TaskController extends AbstractController
      */
     public function edit(Request $request, Task $task, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(TaskType::class, $task);
-        $form->handleRequest($request);
+        if( null === $task->getUser() && in_array("ROLE_ADMIN", $this->getUser()->getRoles())
+            || null !== $task->getUser() && $this->getUser() === $task->getUser() )
+        {
+            $form = $this->createForm(TaskType::class, $task);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $entityManager->flush();
 
-            $this->addFlash('success', 'La tâche a bien été modifiée.');
+                $this->addFlash('success', 'La tâche a bien été modifiée.');
 
-            return $this->redirectToRoute('task_index', [], Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute('task_index', [], Response::HTTP_SEE_OTHER);
+            }
+
+            return $this->renderForm('task/edit.html.twig', [
+                'task' => $task,
+                'form' => $form,
+            ]);
         }
-
-        return $this->renderForm('task/edit.html.twig', [
-            'task' => $task,
-            'form' => $form,
-        ]);
+        $this->addFlash('error', 'Vous n\'avez pas les droits suffisants pour supprimer cette tâche.');
+        return $this->redirectToRoute('task_index');
     }
 
      /**
@@ -113,7 +119,7 @@ class TaskController extends AbstractController
         }
         else
         {
-            $this->addFlash('success', 'Vous n\'avez pas les droits suffisants pour supprimer cette tâche.');
+            $this->addFlash('error', 'Vous n\'avez pas les droits suffisants pour supprimer cette tâche.');
         }
         return $this->redirectToRoute('task_index', [], Response::HTTP_SEE_OTHER);
     }

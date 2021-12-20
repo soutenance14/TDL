@@ -70,3 +70,7 @@ footer {
 .clear {
     clear: both;
 }
+
+.task {
+    padding: 10px;
+}
