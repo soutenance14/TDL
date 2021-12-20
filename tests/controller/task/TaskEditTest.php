@@ -6,6 +6,33 @@ use App\Tests\Controller\LoginTest;
 
 class TaskEdit extends LoginTest
 {
+    //Value in db_test
+    // // USER
+    // $admin = (
+    //     new User())
+    //     ->setUsername("admin")
+    //     ->setRoles(["ROLE_ADMIN"])
+
+    // $user_1 = (
+    //     new User())
+    //     ->setUsername("user1")
+    
+    // $user_2 = (
+    //     new User())
+    //     ->setUsername("user2")
+    
+    // //TASK
+    // $adminTask = new Task();
+    // $adminTask->setUser($admin);
+    
+    // $taskUser_1 = new Task();
+    // $taskUser_1->setUser($user_1);
+
+    // $taskUser_2 = new Task();
+    // $taskUser_2->setUser($user_2);
+
+    // $taskAnonymous = new Task();
+
         // ALL TESTS SUCCESS
     public function testSuccessEditOneOfMyTaskRoute(): void
     {
