@@ -11,11 +11,7 @@ class SecurityTest extends LoginTest
     {
         $this->client->request('GET', '/login');
         $this->assertSame(200, $this->client->getResponse()->getStatusCode());
-
-        // Test if login field exists
-        $this->assertSelectorExists('input[name="username"]');
-        $this->assertSelectorExists('input[name="password"]');
-        $this->assertSelectorTextContains('button', 'Se connecter');
+        $this->assertSelectorsLoginFormExists();
     }
     
     public function testSuccessLogin(): void
@@ -38,6 +34,8 @@ class SecurityTest extends LoginTest
         // If Not Acccess Autorized, request NOK -> status code = 200, redirect 302 or 303
         $this->assertNotEquals(200, $this->client->getResponse()->getStatusCode());
     }
+
+    //utils
     private function randomSecuredRoute(): void
     {
         // Only Auth user can access to this route

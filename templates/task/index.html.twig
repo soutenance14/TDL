@@ -11,7 +11,7 @@
         {% for task in tasks %}
         <div class="col-sm-4 col-lg-4 col-md-4">
             <div class="thumbnail">
-                <div class="caption">
+                <div class="task">
                     <h4 class="pull-right">
                         {% if task.isDone %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}
                     </h4>
@@ -22,17 +22,17 @@
                     {% else %}
                     <h5 class="anonyme">Anonyme</h5>
                     {% endif %}
-                </div>
-                <div>
-                    <form method="post" action="{{ path('task_toggle', {'id' : task.id }) }}">
-                        <button class="btn btn-success btn-sm pull-right">
-                            {% if not task.isDone %}Marquer comme faite{% else %}Marquer non terminée{% endif %}
-                        </button>
-                    </form>
-                    
-                    {% if (task.user and task.user == app.user) or (task.user == null and 'ROLE_ADMIN' in app.user.roles) %}
-                        {{ include('task/_delete_form.html.twig') }}
-                    {% endif %}
+                    <div>
+                        <form method="post" action="{{ path('task_toggle', {'id' : task.id }) }}">
+                            <button class="btn btn-success btn-sm pull-right">
+                                {% if not task.isDone %}Marquer comme faite{% else %}Marquer non terminée{% endif %}
+                            </button>
+                        </form>
+                        
+                        {% if (task.user and task.user == app.user) or (task.user == null and 'ROLE_ADMIN' in app.user.roles) %}
+                            {{ include('task/_delete_form.html.twig') }}
+                        {% endif %}
+                    </div>
                     <div class="clear"></div>
                 </div>
             </div>
