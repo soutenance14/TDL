@@ -111,11 +111,11 @@ class TaskController extends AbstractController
         if( null === $task->getUser() && in_array("ROLE_ADMIN", $this->getUser()->getRoles())
             || null !== $task->getUser() && $this->getUser() === $task->getUser() )
         {
-            if ($this->isCsrfTokenValid('delete'.$task->getId(), $request->request->get('_token'))) {
+            // if ($this->isCsrfTokenValid('delete'.$task->getId(), $request->request->get('_token'))) {
                 $entityManager->remove($task);
                 $entityManager->flush();
                 $this->addFlash('success', 'La tâche a bien été supprimée.');
-            }   
+            // }   
         }
         else
         {
