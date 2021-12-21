@@ -4,7 +4,7 @@ namespace App\Tests;
 
 use App\Tests\Controller\LoginTest;
 
-class TaskEdit extends LoginTest
+class TaskEditAndDeleteTest extends LoginTest
 {
     //Value in db_test
     // This is util for understand tests
@@ -39,7 +39,32 @@ class TaskEdit extends LoginTest
     // $taskAnonymous = new Task();
     // ID = 4
 
+    // LIST--LIST--LIST--LIST--LIST--LIST--LIST--LIST--LIST--LIST--LIST--LIST--LIST--LIST--LIST--LIST--LIST--LIST--LIST--LIST--LIST--
+    // LIST--LIST--LIST--LIST--LIST--LIST--LIST--LIST--LIST--LIST--LIST--LIST--LIST--LIST--LIST--LIST--LIST--LIST--LIST--LIST--LIST--
+    
+    public function testErrorListTaskRoute(): void
+    {
+        $this->login("victor", "password");// wrong user try to auth
+        $this->client->request('GET', '/task//');
+        $this->assertRedirectToLogin();
+    }
 
+    public function testSuccessListTaskDisplay(): void
+    {
+        $this->login();// real user try to auth
+        $this->client->request('GET', '/task//');
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertSelectorTextContains('h1', 'Liste des tâches');
+
+        $this->assertSelectorExists('h5.anonyme', 'Anonyme');
+        $this->assertSelectorExists('h5.owner', 'Par admin');
+        $this->assertSelectorExists('h5.owner', 'Par user1');
+        $this->assertSelectorExists('h5.owner', 'Par user2');
+    }
+
+    // EDIT--EDIT--EDIT--EDIT--EDIT--EDIT--EDIT--EDIT--EDIT--EDIT--EDIT--EDIT--EDIT--EDIT--EDIT--EDIT--EDIT--EDIT--EDIT--EDIT--EDIT--
+    // EDIT--EDIT--EDIT--EDIT--EDIT--EDIT--EDIT--EDIT--EDIT--EDIT--EDIT--EDIT--EDIT--EDIT--EDIT--EDIT--EDIT--EDIT--EDIT--EDIT--EDIT--
+    
     // TESTS ERROR
     public function testErrorEditTaskFromAnotherUserRoute(): void
     {
@@ -111,5 +136,58 @@ class TaskEdit extends LoginTest
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
         $this->assertSelectorTextContains('div.alert-success', 'La tâche a bien été modifiée.');
     }
-     
+
+
+    // DELETE--DELETE--DELETE--DELETE--DELETE--DELETE--DELETE--DELETE--DELETE--DELETE--DELETE--DELETE--DELETE--DELETE--DELETE--DELETE--
+    // DELETE--DELETE--DELETE--DELETE--DELETE--DELETE--DELETE--DELETE--DELETE--DELETE--DELETE--DELETE--DELETE--DELETE--DELETE--DELETE--
+
+    // TESTS ERROR
+    public function testErrorDeleteTaskFromAnotherUserRoute(): void
+    {
+        $this->login(); // admin auth
+        //task 2 is created by user1, not admin  
+        $this->client->request('POST', '/task/2');
+        $this->assertTrue($this->redirectionOk($this->client->getResponse()->getStatusCode()));
+        $this->client->followRedirect();
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertSelectorTextContains('div.alert-danger', 'Vous n\'avez pas les droits suffisants pour supprimer cette tâche.');
+    }
+
+    public function testErrorDeleteAnonymousTaskNotAdmin(): void
+    {
+        $this->login("user1", "password"); // user1 is not admin
+        
+        //task 4 is anonymous
+        $this->client->request('POST', '/task/4');
+        $this->assertTrue($this->redirectionOk($this->client->getResponse()->getStatusCode()));
+        $this->client->followRedirect();
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertSelectorTextContains('div.alert-danger', 'Vous n\'avez pas les droits suffisants pour supprimer cette tâche.');
+    }
+
+    // // // TESTS SUCCESS
+   
+    public function testSuccessDeleteOneOfMyTask(): void
+    {
+        $this->login("user1", "password"); // user 2 auth
+        
+        //task id 2 is created by user1
+        $this->client->request('POST', '/task/2');
+        $this->assertTrue($this->redirectionOk($this->client->getResponse()->getStatusCode()));
+        $this->client->followRedirect();
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertSelectorTextContains('div.alert-success', 'La tâche a bien été supprimée.');
+    }
+   
+    public function testSuccessDeleteAnonymousTask(): void
+    {
+        $this->login(); // admin auth
+ 
+        // task id = 4 is anonymous
+        $this->client->request('POST', '/task/4');
+        $this->assertTrue($this->redirectionOk($this->client->getResponse()->getStatusCode()));
+        $this->client->followRedirect();
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertSelectorTextContains('div.alert-success', 'La tâche a bien été supprimée.');
+    }
 }
