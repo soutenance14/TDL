@@ -1,6 +1,6 @@
 # ToDoList
 ========
-Projet 8
+Projet 8 OpenClassroom Parcours Symfony
 
 https://openclassrooms.com/projects/ameliorer-un-projet-existant-1
 ## Install git
