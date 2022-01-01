@@ -52,6 +52,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->tasks = new ArrayCollection();
     }
 
+    public function setId($id): void
+    {
+        //for test
+        $this->id = $id;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

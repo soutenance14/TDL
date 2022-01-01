@@ -42,7 +42,6 @@ abstract class LoginTest extends WebTestCase
             'username'    => $username,
             'password' => $password,
         ]);
-
     }
     
     public function redirectionOk($statusCode): bool

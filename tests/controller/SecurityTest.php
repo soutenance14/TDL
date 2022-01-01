@@ -35,6 +35,19 @@ class SecurityTest extends LoginTest
         // If Acccess Autorized, request OK -> status code = 200
         $this->assertSame(200, $this->client->getResponse()->getStatusCode());
     }
+
+    public function testSuccessLogout(): void
+    {
+        $this->client->request('GET', '/logout');
+        $this->assertTrue($this->redirectionOk($this->client->getResponse()->getStatusCode()));
+        $this->client->followRedirect();
+        $this->assertSelectorsLoginFormExists();
+        $this->randomSecuredRoute();
+        // If Acccess Autorized, request OK -> status code = 200
+        $this->assertNotEquals(200, $this->client->getResponse()->getStatusCode());
+    }
+
+    
     
     //UTILS
     private function randomSecuredRoute(): void
