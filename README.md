@@ -2,6 +2,8 @@
 ========
 Projet 8 OpenClassroom Parcours Symfony
 
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/f4d0e9e6d4c24b72b1e1c9f9f828327e)](https://www.codacy.com/gh/soutenance14/TDL/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=soutenance14/TDL&amp;utm_campaign=Badge_Grade)
+
 https://openclassrooms.com/projects/ameliorer-un-projet-existant-1
 ## Install git
 GIT (https://git-scm.com/downloads) 
